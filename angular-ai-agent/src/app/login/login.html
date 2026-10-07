@@ -1,0 +1,39 @@
+<div class="login-container">
+
+  <div class="login-card">
+
+    <h2>AI Agent Login</h2>
+
+    <p>Login to continue</p>
+
+    <form (ngSubmit)="login()">
+
+      <input
+        type="email"
+        name="email"
+        [(ngModel)]="email"
+        placeholder="Email"
+      />
+
+      <input
+        type="password"
+        name="password"
+        [(ngModel)]="password"
+        placeholder="Password"
+      />
+
+      <button type="submit">
+        Login
+      </button>
+
+    </form>
+
+    @if (errorMessage) {
+      <div class="error">
+        {{ errorMessage }}
+      </div>
+    }
+
+  </div>
+
+</div>

@@ -1,0 +1,224 @@
+<div class="chat-container">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+
+    <div class="sidebar-header">
+
+      <h2>AI Agent</h2>
+
+      <button
+        class="new-chat-btn"
+        (click)="newChat()">
+        + New Chat
+      </button>
+
+    </div>
+
+
+    <!-- Conversation List -->
+    <div class="conversation-list">
+
+      @for (
+        conversation of conversations;
+        track conversation.conversationId
+      ) {
+
+        <div class="conversation-item-wrapper">
+
+          <button
+            class="conversation-item"
+            (click)="selectConversation(conversation)"
+          >
+            {{ conversation.title }}
+          </button>
+
+          <button
+            class="delete-chat-btn"
+            (click)="deleteChat(conversation, $event)"
+            title="Delete chat"
+          >
+            🗑️
+          </button>
+
+        </div>
+
+      }
+
+    </div>
+
+
+    <!-- Sidebar Footer -->
+    <div class="sidebar-footer">
+
+      <div class="developer-credit">
+
+        <span class="developer-label">
+          Developed by
+        </span>
+
+        <a
+          href="https://github.com/Sarvanrohit05"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="github-link">
+          Sarvanrohit05
+        </a>
+
+      </div>
+
+
+      <button
+        class="logout-btn"
+        (click)="logout()">
+        Logout
+      </button>
+
+    </div>
+
+  </aside>
+
+
+  <!-- Main Chat -->
+  <main class="chat-main">
+
+    <!-- Header -->
+    <header class="chat-header">
+
+      <h3>AI Assistant</h3>
+
+    </header>
+
+
+    <!-- Messages -->
+    <div class="messages">
+
+      @if (messages.length === 0 && !selectedFile) {
+
+        <div class="welcome">
+
+          <h2>Hello 👋</h2>
+
+          <p>
+            How can I help you today?
+          </p>
+
+        </div>
+
+      }
+
+
+      <!-- Selected File -->
+      @if (selectedFile) {
+
+        <div class="file-preview">
+
+          <div class="file-icon">
+            📎
+          </div>
+
+          <div class="file-info">
+
+            <div class="file-name">
+              {{ selectedFile.name }}
+            </div>
+
+            <div class="file-status">
+              File attached
+            </div>
+
+          </div>
+
+        </div>
+
+      }
+
+
+      <!-- Chat Messages -->
+      @for (
+        msg of messages;
+        track $index
+      ) {
+
+        <div
+          class="message-row"
+          [class.user-message]="msg.role === 'USER'"
+          [class.ai-message]="msg.role === 'AI'"
+        >
+
+          <div class="message-bubble">
+
+            {{ msg.content }}
+
+          </div>
+
+        </div>
+
+      }
+
+
+      <!-- Loading -->
+      @if (loading) {
+
+        <div class="message-row ai-message">
+
+          <div class="message-bubble typing">
+
+            AI is thinking...
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+
+    <!-- Input Area -->
+    <div class="input-area">
+
+
+      <!-- File Attachment -->
+      <label
+        class="file-btn"
+        title="Attach file">
+
+        📎
+
+        <input
+          type="file"
+          hidden
+          accept="image/*,.pdf,.doc,.docx,.txt"
+          (change)="onFileSelected($event)"
+        />
+
+      </label>
+
+
+      <!-- Message Input -->
+      <input
+        class="message-input"
+        type="text"
+        [(ngModel)]="message"
+        (keyup.enter)="sendMessage()"
+        placeholder="Message AI..."
+      />
+
+
+      <!-- Send -->
+      <button
+        class="send-btn"
+        (click)="sendMessage()"
+        [disabled]="
+          loading ||
+          (!message.trim() && !selectedFile)
+        ">
+        Send
+      </button>
+
+    </div>
+
+  </main>
+
+</div>
